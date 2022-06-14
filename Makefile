@@ -1,7 +1,7 @@
 # Makefile #
 # Create a bin and obj folder if needed #
 
-MODULES= listADT linkedList doubleLinkedList stackLinked stackArray\
+MODULES= listADT linkedList doubleLinkedList stackLinked stackArray stackReverse\
 
 CC=gcc
 CFLAGS=-I -Wall -g

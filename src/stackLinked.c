@@ -1,4 +1,5 @@
 // LIFO data structure with push(), pop(), top(), isEmpty()
+// A stack can also be used for reversal operations
 #include <stdio.h>
 #include <stdlib.h>
 
