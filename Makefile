@@ -1,4 +1,5 @@
 # Makefile #
+# Create a bin and obj folder if needed #
 
 MODULES=doofus listADT linkedList\
 

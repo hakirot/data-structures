@@ -1,8 +1,8 @@
 /*
  * A dynamic list (array)
  *
- *  Access: O(1)
- *  Insert O(n) 
+ *  Access: O(1) - We know an array is a contiguous block of memory, so A[i] = &A + sizeof(i)
+ *  Insert O(n) - Needed to shift the list
  *  Remove O(n)
  *  Add O(n)
  *  Resize O(n)
@@ -20,5 +20,3 @@ int main(){
 
     return 0;
 }
-
-
