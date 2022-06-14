@@ -16,6 +16,7 @@ Node* DeleteAt(int position, Node* head);
 Node* Reverse(Node* head);
 void Print(Node* head);
 void RecursivePrint(Node* head);
+Node* RecursiveReverse(Node* node);
 
 struct Node
 {
@@ -65,6 +66,11 @@ int main(int argc, char * argv[]){
 
     printf("Recursive print:\n");
     RecursivePrint(head);
+
+    printf("\nRecursive reverse:\n");
+    head = RecursiveReverse(head);
+    Print(head);
+
 
     return 0;
 }
@@ -155,10 +161,30 @@ Node* Reverse(Node* head){
     return head;
 }
 
+// Not as efficient as iterative print, due to using a lot of memory on the stack
 void RecursivePrint(Node* p){
 
     if(p == NULL) return;
 
     RecursivePrint(p->next);
     printf(" %d", p->data);
+}
+
+Node* RecursiveReverse(Node* node){
+
+    Node* head = NULL;
+
+    // Go deep, find the NULL, make head and return up the call stack
+    if(node->next == NULL){
+        head = node;
+        return head;
+    }
+
+    head = RecursiveReverse(node->next);
+
+    Node* q = node->next;
+    q->next = node;
+    node->next = NULL;
+
+    return head;
 }
