@@ -15,6 +15,7 @@ Node* InsertAt(int position, int data, Node* head);
 Node* DeleteAt(int position, Node* head);
 Node* Reverse(Node* head);
 void Print(Node* head);
+void RecursivePrint(Node* head);
 
 struct Node
 {
@@ -62,6 +63,8 @@ int main(int argc, char * argv[]){
     printf("After reversal:\n");
     Print(head);
 
+    printf("Recursive print:\n");
+    RecursivePrint(head);
 
     return 0;
 }
@@ -150,4 +153,12 @@ Node* Reverse(Node* head){
 
     head = prev;
     return head;
+}
+
+void RecursivePrint(Node* p){
+
+    if(p == NULL) return;
+
+    RecursivePrint(p->next);
+    printf(" %d", p->data);
 }
