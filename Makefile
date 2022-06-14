@@ -1,7 +1,7 @@
 # Makefile #
 # Create a bin and obj folder if needed #
 
-MODULES=doofus listADT linkedList doubleLinkedList stack\
+MODULES=doofus listADT linkedList doubleLinkedList stackLinked stackArray\
 
 CC=gcc
 CFLAGS=-I -Wall -g
