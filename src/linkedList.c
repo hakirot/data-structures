@@ -10,14 +10,13 @@
 #include <stdlib.h> 
 
 typedef struct Node Node;
-Node * head;
-void Insert(int x);
-void Print();
+Node* Insert(Node* head, int x);
+void Print(Node* head);
 
 struct Node
 {
     int data;
-    Node * next;
+    Node* next;
 };
 
 int main(int argc, char * argv[]){
@@ -31,28 +30,28 @@ int main(int argc, char * argv[]){
 
     int numNodes = atoi(argv[1]);
 
-    // in C++ 'new' keyword is recommended
-    //Node * list = (Node*)malloc(sizeof(Node));
+    Node * head = NULL;
 
     for(int i = 0; i < numNodes; i++){
-        Insert(i);
+        head = Insert(head, i);
     }
 
-    Print();
+    Print(head);
 
     return 0;
 }
 
-void Insert(int x){
+Node* Insert(Node * head, int x){
 
     Node * temp = (Node *)malloc(sizeof(Node));
 
     temp->data = x;
     temp->next = head;
     head = temp;
+    return head;
 }
 
-void Print(){
+void Print(Node* head){
 
     Node * temp = head;
 
