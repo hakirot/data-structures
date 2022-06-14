@@ -11,6 +11,9 @@
 
 typedef struct Node Node;
 Node* Insert(Node* head, int x);
+Node* InsertAt(int position, int data, Node* head);
+Node* DeleteAt(int position, Node* head);
+Node* Reverse(Node* head);
 void Print(Node* head);
 
 struct Node
@@ -28,15 +31,37 @@ int main(int argc, char * argv[]){
         printf("%d, %d\n", argc, atoi(argv[1]));
     }
 
-    int numNodes = atoi(argv[1]);
+    //int numNodes = atoi(argv[1]);
+    int numNodes = 10;
 
     Node * head = NULL;
 
     for(int i = 0; i < numNodes; i++){
         head = Insert(head, i);
     }
-
+    printf("Init:\n");
     Print(head);
+
+    head = InsertAt(1, 100, head);
+    head = InsertAt(5, 50, head);
+    head = InsertAt(12, 20, head);
+
+    printf("After inserts:\n");
+    Print(head);
+
+    head = DeleteAt(10, head);
+    head = DeleteAt(3, head);
+    head = DeleteAt(7, head);
+    head = DeleteAt(1, head);
+
+    printf("After deletes:\n");
+    Print(head);
+
+    head = Reverse(head);
+
+    printf("After reversal:\n");
+    Print(head);
+
 
     return 0;
 }
@@ -60,4 +85,69 @@ void Print(Node* head){
         temp=temp->next;
     }
     printf("\n");
+}
+
+Node* InsertAt(int position, int data, Node* head){
+
+    Node * temp = (Node *)malloc(sizeof(Node));
+    temp->data = data;
+    temp->next = NULL;
+
+    if(position == 1){
+        temp->next = head;
+        head = temp;
+        return head;
+    } 
+
+    Node * temp2 = head;
+
+    for(int i = 0; i <= position-2; i++ ){
+        temp2 = temp2->next;
+    }
+
+    temp->next = temp2->next;
+    temp2->next = temp;
+
+    return head;
+}
+
+Node* DeleteAt(int position, Node* head){
+
+    Node* temp = head;
+
+    if(position == 1){
+        head = temp->next;
+        free(temp);
+        return head;
+    }
+
+    for(int i = 0; i < position-2; i++ ){
+        temp = temp->next;
+    }
+
+    Node* temp2 = temp->next;
+    temp->next = temp2->next;
+    free(temp2); // In c++: delete temp2;
+
+    return head;
+}
+
+Node* Reverse(Node* head){
+
+    if(head == NULL) return NULL;
+
+    Node* temp = head;
+    Node* prev = NULL;
+    Node* next = NULL;
+
+    while (temp != NULL){
+
+        next = temp->next;
+        temp->next = prev;
+        prev = temp;
+        temp = next;
+    }
+
+    head = prev;
+    return head;
 }
