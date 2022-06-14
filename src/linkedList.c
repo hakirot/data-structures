@@ -10,6 +10,13 @@
 #include <stdlib.h> 
 
 typedef struct Node Node;
+
+struct Node
+{
+    int data;
+    Node* next;
+};
+
 Node* Insert(Node* head, int x);
 Node* InsertAt(int position, int data, Node* head);
 Node* DeleteAt(int position, Node* head);
@@ -17,12 +24,6 @@ Node* Reverse(Node* head);
 void Print(Node* head);
 void RecursivePrint(Node* head);
 Node* RecursiveReverse(Node* node);
-
-struct Node
-{
-    int data;
-    Node* next;
-};
 
 int main(int argc, char * argv[]){
 
@@ -33,14 +34,15 @@ int main(int argc, char * argv[]){
         printf("%d, %d\n", argc, atoi(argv[1]));
     }
 
-    //int numNodes = atoi(argv[1]);
-    int numNodes = 10;
+    //int numNodes = 10;
+    int numNodes = atoi(argv[1]);
 
     Node * head = NULL;
 
     for(int i = 0; i < numNodes; i++){
         head = Insert(head, i);
     }
+
     printf("Init:\n");
     Print(head);
 
@@ -98,7 +100,7 @@ void Print(Node* head){
 
 Node* InsertAt(int position, int data, Node* head){
 
-    Node * temp = (Node *)malloc(sizeof(Node));
+    Node* temp = (Node *)malloc(sizeof(Node));
     temp->data = data;
     temp->next = NULL;
 
