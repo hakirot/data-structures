@@ -2,6 +2,7 @@
 # Specify bin/ and obj/ folder if needed #
 
 MODULES= listADT linkedList doubleLinkedList stackLinked stackArray stackReverse postfix\
+		 queue queueLinked
 
 CC=gcc
 CFLAGS=-I -Wall -g

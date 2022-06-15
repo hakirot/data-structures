@@ -36,6 +36,7 @@ void Print(){
     for(int i = 0; i <= top; i++){
         printf("%d ", A[i]);
     }
+
     printf("\n");
 
 }
