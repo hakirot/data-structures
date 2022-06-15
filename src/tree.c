@@ -107,8 +107,12 @@ int main(int argc, char * argv[]){
     printf("min: %d\n", FindMin(root));
     printf("max: %d\n", FindMax(root));
     printf("height: %d\n", FindHeight(root));
+
     printf("BFS Print:\n");
     BfsPrint(root);
+
+    printf("\nDFS Print:\n");
+    DfsPrint(root);
 
     return 0;
 }
@@ -207,4 +211,22 @@ void PrintCurrentLevel(BstNode* root, int level){
  */
 void DfsPrint(BstNode* root){
 
+    if(root == NULL) return;
+
+    /* Preorder
+    printf(" %d", root->data);
+    DfsPrint(root->left);
+    DfsPrint(root->right);
+    */
+
+    /* Inorder
+    DfsPrint(root->left);
+    printf(" %d", root->data);
+    DfsPrint(root->right);
+    */
+
+    /* Postorder */
+    DfsPrint(root->left);
+    DfsPrint(root->right);
+    printf(" %d", root->data);
 }
