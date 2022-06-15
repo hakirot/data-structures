@@ -64,6 +64,11 @@
 
 typedef struct BstNode BstNode;
 
+ #define max(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
+
 struct BstNode {
     int data;
     BstNode* left;
@@ -73,6 +78,12 @@ struct BstNode {
 BstNode* GetNewNode(int data);
 BstNode* Insert(BstNode* root, int data);
 int Search(BstNode* root, int data);
+int FindMin(BstNode* root);
+int FindMax(BstNode* root);
+int FindHeight(BstNode* root);
+void BfsPrint(BstNode* root);
+void DfsPrint(BstNode* root);
+void PrintCurrentLevel(BstNode* root, int level);
 
 int main(int argc, char * argv[]){
 
@@ -84,8 +95,20 @@ int main(int argc, char * argv[]){
     root = Insert(root, 16);
     root = Insert(root, 3);
     root = Insert(root, 30);
+    root = Insert(root, 33);
+    root = Insert(root, 34);
 
-    printf("%d", Search(root, 31));
+    if(Search(root, 30)){
+        printf("Data found\n");
+    } else {
+        printf("Data not found\n");
+    }
+
+    printf("min: %d\n", FindMin(root));
+    printf("max: %d\n", FindMax(root));
+    printf("height: %d\n", FindHeight(root));
+    printf("BFS Print:\n");
+    BfsPrint(root);
 
     return 0;
 }
@@ -119,4 +142,69 @@ int Search(BstNode* root, int data){
     if(root->data == data) return 1;
     else if (data <= root->data) return Search(root->left, data);
     else return Search(root->right, data);
+}
+
+int FindMin(BstNode* root){
+    if (root == NULL){
+        printf("Error, tree is empty\n");
+        return -1;
+    }
+    if (root->left == NULL) return root->data;
+    return FindMin(root->left);
+}
+
+int FindMax(BstNode* root){
+    if (root == NULL){
+        printf("Error, tree is empty\n");
+        return -1;
+    }
+    if (root->right == NULL) return root->data;
+    return FindMax(root->right);
+}
+
+// O(n)
+int FindHeight(BstNode* root){
+
+    if (root == NULL){
+        return -1;
+    }
+
+    int leftHeight = FindHeight(root->left);
+    int rightHeight = FindHeight(root->right);
+
+    return max(leftHeight, rightHeight) + 1;
+}
+
+/* Level-order
+ * O(n) - must traverse to all nodes
+ * Space-complexity @ worst case: O(n)
+ */
+void BfsPrint(BstNode* root){
+
+    if(root == NULL) return;
+
+    int height = FindHeight(root);
+
+    for(int i = 1; i <= height; i++){
+        PrintCurrentLevel(root, i);
+    }
+}
+
+void PrintCurrentLevel(BstNode* root, int level){
+
+    if(root == NULL) return;
+    if(level == 1) {
+        printf(" %d", root->data);
+    } else if (level > 1){
+        PrintCurrentLevel(root->left, level - 1);
+        PrintCurrentLevel(root->right, level - 1);
+    }
+}
+
+/* Preorder: Data, Left, Right
+ * Inorder: Left, Data, Right
+ * Postorder: Left, Right, Data
+ */
+void DfsPrint(BstNode* root){
+
 }
