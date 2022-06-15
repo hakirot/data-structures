@@ -21,7 +21,7 @@
  *
  *   Maximum number of nodes in a BST at level i is 2^i
  *   A perfect BST that is completely filled will have  n =  2^(h+1) -1  nodes
- *   Therefor the height is  h = log2(n + 1) - 1  edges
+ *   Therefore the height is  h = log2(n + 1) - 1  edges
  *
  *   A complete binary tree has all levels except possible the last completely filled and all 
  *   nodes are as far left as possible
@@ -33,7 +33,8 @@
  *
  *   Cost of operations on a Binary Tree is proportional to to the height of the tree, we 
  *   therefore would like the tree to be as close to complete as possible, otherwise we could
- *   just essentially be following a linked list
+ *   just essentially be following a linked list. To get the time advantages, the tree must be
+ *   sorted and balanced.
  *   
  *   We can implement binary trees using
  *      - Dynamically created nodes
@@ -41,6 +42,21 @@
  *          - For node at index i
  *              - left-child  = 2i + 1
  *              - right-child = 2i + 2
+ *
+ *   BST Array
+ *      - Search O(n) - must scan list, possibly until end
+ *      - Insert O(1) - random access
+ *      - Remove O(n) - may have to shift n-1 elements in worst case
+ *
+ *  A Sorted Balanced BST will have a time of O(logn)
+ *
+ *              Array(unsorted)     Linked List     Array(Sorted)
+ *  Search(x)   O(n)                O(n)            O(logn)
+ *  Insert(x)   O(1)                O(1)            O(logn)
+ *  Remove(x)   O(n)                O(n)            O(logn)
+ *
+ *  All binary search trees must have BST subtrees
+ *      - values of all nodes in left subtrees are less than all values in right subtrees
  */
 
 #include <stdio.h>
