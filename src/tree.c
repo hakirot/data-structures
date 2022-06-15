@@ -70,8 +70,9 @@ struct BstNode {
     BstNode* right;
 };
 
-BstNode* Insert(BstNode* root, int data);
 BstNode* GetNewNode(int data);
+BstNode* Insert(BstNode* root, int data);
+int Search(BstNode* root, int data);
 
 int main(int argc, char * argv[]){
 
@@ -80,8 +81,11 @@ int main(int argc, char * argv[]){
     root = Insert(root, 15);
     root = Insert(root, 7);
     root = Insert(root, 20);
+    root = Insert(root, 16);
+    root = Insert(root, 3);
+    root = Insert(root, 30);
 
-    printf("tree %d %d %d", root->data, root->left->data, root->right->data);
+    printf("%d", Search(root, 31));
 
     return 0;
 }
@@ -107,4 +111,12 @@ BstNode* Insert(BstNode* root, int data){
     }
 
     return root;
+}
+
+int Search(BstNode* root, int data){
+
+    if(root == NULL) return 0;
+    if(root->data == data) return 1;
+    else if (data <= root->data) return Search(root->left, data);
+    else return Search(root->right, data);
 }
