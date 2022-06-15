@@ -1,7 +1,7 @@
 # Makefile #
-# Create a bin and obj folder if needed #
+# Specify bin/ and obj/ folder if needed #
 
-MODULES= listADT linkedList doubleLinkedList stackLinked stackArray stackReverse\
+MODULES= listADT linkedList doubleLinkedList stackLinked stackArray stackReverse postfix\
 
 CC=gcc
 CFLAGS=-I -Wall -g
