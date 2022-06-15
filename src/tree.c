@@ -62,15 +62,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node Node;
+typedef struct BstNode BstNode;
 
-struct Node {
+struct BstNode {
     int data;
-    Node* left;
-    Node* right;
+    BstNode* left;
+    BstNode* right;
 };
+
+BstNode* Insert(BstNode* root, int data);
+BstNode* GetNewNode(int data);
 
 int main(int argc, char * argv[]){
 
+    BstNode* root = NULL;
+
+    root = Insert(root, 15);
+    root = Insert(root, 7);
+    root = Insert(root, 20);
+
+    printf("tree %d %d %d", root->data, root->left->data, root->right->data);
+
     return 0;
+}
+
+BstNode* GetNewNode(int data){
+    BstNode* newNode = malloc(sizeof(BstNode));
+    newNode->data = data;
+    return newNode;
+}
+
+BstNode* Insert(BstNode* root, int data){
+
+    if(root == NULL){
+        return GetNewNode(data);
+
+    } else if (data <= root->data) {
+
+        root->left = Insert(root->left, data);
+
+    } else {
+
+        root->right = Insert(root->right, data);
+    }
+
+    return root;
 }
