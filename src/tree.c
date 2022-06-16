@@ -61,6 +61,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 typedef struct BstNode BstNode;
 
@@ -77,6 +78,7 @@ struct BstNode {
 
 BstNode* GetNewNode(int data);
 BstNode* Insert(BstNode* root, int data);
+BstNode* Delete(BstNode* root, int data);
 int Search(BstNode* root, int data);
 int FindMin(BstNode* root);
 int FindMax(BstNode* root);
@@ -84,6 +86,13 @@ int FindHeight(BstNode* root);
 void BfsPrint(BstNode* root);
 void DfsPrint(BstNode* root);
 void PrintCurrentLevel(BstNode* root, int level);
+int IsBST(BstNode* root);
+int IsSubtreeLesser(BstNode* root, int data);
+int IsSubtreeGreater(BstNode* root, int data);
+int IsBST(BstNode* root);
+int IsBSTPlus(BstNode* root);
+int IsBstUtil(BstNode* root, int min, int max);
+BstNode* FindMinNode(BstNode* root);
 
 int main(int argc, char * argv[]){
 
@@ -114,6 +123,40 @@ int main(int argc, char * argv[]){
     printf("\nDFS Print:\n");
     DfsPrint(root);
 
+    BstNode* NotBst = NULL;
+    NotBst = Insert(NotBst, 15);
+    NotBst = Insert(NotBst, 7);
+    NotBst = Insert(NotBst, 20);
+    NotBst->left->data = 20;
+    NotBst->right->data = 7;
+
+    printf("\nNot Bfs:");
+    BfsPrint(NotBst);
+
+    printf("\nIs NotBfs a BST?\n");
+    if(IsBST(NotBst)) printf("yes\n");
+    else printf("no\n");
+
+    printf("Is the first tree a BST?\n");
+    if(IsBST(root)) printf("yes\n");
+    else printf("no\n");
+
+    printf("Is NotBfs a BST (using better method)?\n");
+    if(IsBSTPlus(NotBst)) printf("yes\n");
+    else printf("no\n");
+
+    printf("Is the first tree a BST (using better method)?\n");
+    if(IsBSTPlus(root)) printf("yes\n");
+    else printf("no\n");
+
+    root = Delete(root, 20);
+    root = Delete(root, 33);
+    root = Delete(root, 3);
+
+    printf("Tree after deletions\n");
+    BfsPrint(root);
+
+    printf("\n");
     return 0;
 }
 
@@ -189,7 +232,7 @@ void BfsPrint(BstNode* root){
 
     int height = FindHeight(root);
 
-    for(int i = 1; i <= height; i++){
+    for(int i = 1; i <= height + 1; i++){
         PrintCurrentLevel(root, i);
     }
 }
@@ -208,6 +251,9 @@ void PrintCurrentLevel(BstNode* root, int level){
 /* Preorder: Data, Left, Right
  * Inorder: Left, Data, Right
  * Postorder: Left, Right, Data
+ *
+ * Complexity: all O(n)
+ * Space complexity: O(h) where h is height
  */
 void DfsPrint(BstNode* root){
 
@@ -229,4 +275,97 @@ void DfsPrint(BstNode* root){
     DfsPrint(root->left);
     DfsPrint(root->right);
     printf(" %d", root->data);
+}
+
+// These are expensive operations, multiple nodes are being compared more than once. O(n^2)
+int IsBST(BstNode* root){
+    // All BST must have BST subtree
+    if(root == NULL) return 1;
+    if(IsSubtreeLesser(root->left, root->data)
+        && IsSubtreeGreater(root->right, root->data)
+        && IsBST(root->left)
+        && IsBST(root->right)) return 1;
+    else return 0;
+}
+
+int IsSubtreeLesser(BstNode* root, int data){
+    if(root == NULL) return 1;
+    if(root->data <= data
+        && IsSubtreeLesser(root->left, data)
+        && IsSubtreeLesser(root->right, data)) return 1;
+    else return 0;
+}
+
+int IsSubtreeGreater(BstNode* root, int data){
+    if(root == NULL) return 1;
+    if(root->data > data
+        && IsSubtreeGreater(root->left, data)
+        && IsSubtreeGreater(root->right, data)) return 1;
+    else return 0;
+}
+
+// This method is both shorter and more effiecient at O(n)
+int IsBSTPlus(BstNode* root){
+    return IsBstUtil(root, INT_MIN, INT_MAX);
+}
+
+int IsBstUtil(BstNode* root, int min, int max){
+    if(root == NULL) return 1;
+    if(root->data >= min && root->data < max
+        && IsBstUtil(root->left, min, root->data)
+        && IsBstUtil(root->right, root->data, max)) return 1;
+    else return 0;
+}
+
+/* 1. Find the min in right subtree
+ * 2. Copy the value in the targetted node
+ * 3. Delete the duplicate from the right subtree
+ */
+BstNode* Delete(BstNode* root, int data){
+
+    if(root == NULL) return NULL;
+    else if (data < root->data) root->left = Delete(root->left, data);
+    else if (data > root->data) root->right = Delete(root->right, data);
+    else // Found you, prepare to be ended
+    {
+        // No child
+        if(root->left == NULL && root->right == NULL){
+            free(root);
+            root = NULL;
+        }
+
+        // One child
+        else if (root->left == NULL){
+            BstNode* temp = root;
+            root = root->right;
+            free(temp);
+        }
+
+        else if (root->right == NULL){
+            BstNode* temp = root;
+            root = root->left;
+            free(temp);
+        }
+
+        // Two children
+        else {
+            BstNode* temp = FindMinNode(root->right);
+            root->data = temp->data;
+            root->right = Delete(root->right, temp->data);
+        }
+    }
+
+    return root;
+}
+
+BstNode* FindMinNode(BstNode* root){
+    if (root == NULL){
+        printf("Error, tree is empty\n");
+        return NULL;
+    }
+    if (root->left == NULL){
+        printf("Min node: %d\n", root->data);
+        return root;
+    }
+    return FindMinNode(root->left);
 }
