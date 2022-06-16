@@ -93,6 +93,8 @@ int IsBST(BstNode* root);
 int IsBSTPlus(BstNode* root);
 int IsBstUtil(BstNode* root, int min, int max);
 BstNode* FindMinNode(BstNode* root);
+BstNode* GetInorderSuccessor(BstNode* root, int data);
+BstNode* SearchNode(BstNode* root, int data);
 
 int main(int argc, char * argv[]){
 
@@ -156,7 +158,11 @@ int main(int argc, char * argv[]){
     printf("Tree after deletions\n");
     BfsPrint(root);
 
-    printf("\n");
+    int var = 30;
+    BstNode* successor = GetInorderSuccessor(root, var);
+    printf("\nInorder successor of %d: %d\n", var, successor->data);
+
+    //printf("\n");
     return 0;
 }
 
@@ -265,16 +271,16 @@ void DfsPrint(BstNode* root){
     DfsPrint(root->right);
     */
 
-    /* Inorder
+    /* Inorder */
     DfsPrint(root->left);
     printf(" %d", root->data);
     DfsPrint(root->right);
-    */
 
-    /* Postorder */
+    /* Postorder 
     DfsPrint(root->left);
     DfsPrint(root->right);
     printf(" %d", root->data);
+    */
 }
 
 // These are expensive operations, multiple nodes are being compared more than once. O(n^2)
@@ -364,8 +370,44 @@ BstNode* FindMinNode(BstNode* root){
         return NULL;
     }
     if (root->left == NULL){
-        printf("Min node: %d\n", root->data);
+        //printf("Min node: %d\n", root->data);
         return root;
     }
     return FindMinNode(root->left);
+}
+
+// O(h)
+BstNode* GetInorderSuccessor(BstNode* root, int data){
+
+    // Search the node O(h)
+    BstNode* current = SearchNode(root, data);
+    if(current == NULL) return NULL;
+
+    // Case 1: Node has right subtree
+    if(current->right != NULL){
+        return FindMinNode(current->right);
+    }
+
+    // Case 2: Node has no right subtree
+    else {
+        BstNode* successor = NULL;
+        BstNode* walk = root;
+        while(walk != current) {
+            if(current->data < walk->data){
+                successor = walk;
+                walk = walk->left;
+            } else {
+                walk = walk->right;
+            }
+        }
+        return successor;
+    }
+}
+
+BstNode* SearchNode(BstNode* root, int data){
+
+    if(root == NULL) return NULL;
+    if(root->data == data) return root;
+    else if (data <= root->data) return SearchNode(root->left, data);
+    else return SearchNode(root->right, data);
 }
