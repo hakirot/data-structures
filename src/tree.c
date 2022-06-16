@@ -376,7 +376,10 @@ BstNode* FindMinNode(BstNode* root){
     return FindMinNode(root->left);
 }
 
-// O(h)
+/* The inorder successor is the next highest value in the tree (see inorder option of DfsPrint)
+ * Next highest Number will either be the leftmost of the right subtree or 
+ * O(h)
+ */
 BstNode* GetInorderSuccessor(BstNode* root, int data){
 
     // Search the node O(h)
