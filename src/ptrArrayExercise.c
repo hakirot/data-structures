@@ -57,5 +57,50 @@ Edge edge_list[MAX_SIZE];
 
 int main(int argc, char * argv[]){
 
+    int array[5] = {1, 2, 3, 4, 5};
+
+    for (int i = 0; i < 5; i++){
+        printf(" %d", array[i]);
+    }
+    printf("\n");
+
+    for (int i = 0; i < 5; i++){
+        array[i] = i*2;
+    }
+
+    for (int i = 0; i < 5; i++){
+        printf(" %d", array[i]);
+    }
+    printf("\n");
+
+    int* ptr = array;
+    for (int i = 0; i < 5; i++){
+        printf(" %d", *ptr);
+        ptr++;
+    }
+
+    int* ptrArray[5][5];
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 5; j++){
+            ptrArray[i][j] = malloc(sizeof(int));
+            *ptrArray[i][j] = i + j;
+        }
+    }
+    printf("\n\n");
+
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 5; j++){
+            printf(" %d", *ptrArray[i][j]);
+        }
+        printf(" \n");
+    }
+
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 5; j++){
+            free(ptrArray[i][j]);
+        }
+    }
+
+    printf("\n");
     return 0;
 }
