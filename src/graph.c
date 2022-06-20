@@ -63,6 +63,7 @@ Node* GetNewNode(int data);
 void AddConnection(Node** array, char vertex, char neighbor);
 int SearchConnection(Node** array, char vertex, char neighbor);
 void PrintGraph(Node** array);
+void RemoveConnection(Node** array, char vertex, char neighbor);
 
 int main(int argc, char * argv[]){
 
@@ -77,6 +78,12 @@ int main(int argc, char * argv[]){
     AddConnection(Array, 'A', 'F');
     AddConnection(Array, 'B', 'C');
     AddConnection(Array, 'F', 'H');
+    PrintGraph(Array);
+
+    printf("---------------------------------\nAfter removals of A-D, A-F, F-H:\n--------------------------------- \n");
+    RemoveConnection(Array, 'A', 'D');
+    RemoveConnection(Array, 'A', 'F');
+    RemoveConnection(Array, 'F', 'H');
     PrintGraph(Array);
 
     return 0;
@@ -184,9 +191,79 @@ void PrintGraph(Node** array){
     return;
 }
 
+void RemoveConnection(Node** array, char vertex, char neighbor){
+
+    int a = vertex - 65;
+    int b = neighbor - 65;
+    if (a < 0 || a >= 0 + NUM_VERTICES ||
+        b < 0 || b >= 0 + NUM_VERTICES ||
+        a == b)
+    {
+        if(a == b){
+            printf("Error: Duplicate vertex\n");
+            return;
+        } else {
+            printf("Error: Vertex unknown\n");
+            return;
+        }
+    }
+
+    if(!SearchConnection(array, vertex, neighbor)){
+        printf("Error: %c is not connected to %c -- no deletion needed\n", vertex, neighbor);
+        return;
+    }
+
+
+    Node* temp = array[a];
+    if (temp->data == b){
+
+        array[a] = temp->next;
+        free(temp);
+        temp = NULL;
+
+    } else {
+
+        while(temp->next != NULL){
+            if(temp->next->data == b){
+
+                Node* gbge = temp->next;
+                temp->next = temp->next->next;
+                free(gbge);
+                gbge = NULL;
+                break;
+            }
+            temp = temp->next;
+        }
+        if(1){
+            printf("..paused\n");
+            getchar();
+        }
+    }
+
+    temp = array[b];
+    if (temp->data == a){
+
+        array[b] = temp->next;
+        free(temp);
+        temp = NULL;
+
+    } else {
+        while(temp->next != NULL){
+            if(temp->next->data == a){
+
+                Node* gbge = temp->next;
+                temp->next = temp->next->next;
+                free(gbge);
+            }
+            temp = temp->next;
+        }
+    }
+}
+
 /*
-    if(vertex == 66){
+    if(1){
         printf("..paused\n");
         getchar();
     }
 */
+
